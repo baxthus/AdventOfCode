@@ -4,40 +4,41 @@
 #include <regex>
 #include <string>
 
-long long solve_puzzle(const std::string& input) {
-    std::regex pattern(R"(mul\((\d{1,3}),(\d{1,3})\))");
-    std::smatch match;
-    std::string::const_iterator search_start(input.cbegin());
+long long solve_part1(const std::string& input) {
     long long total = 0;
+    std::regex pattern(R"(mul\((\d{1,3}),(\d{1,3})\))");
+    std::smatch matches;
 
-    while (std::regex_search(search_start, input.cend(), match, pattern)) {
-        int x = std::stoi(match[1]);
-        int y = std::stoi(match[2]);
+    std::string::const_iterator search_start(input.cbegin());
+    while (std::regex_search(search_start, input.cend(), matches, pattern)) {
+        int x = std::stoi(matches[1]);
+        int y = std::stoi(matches[2]);
         total += x * y;
-        search_start = match.suffix().first;
+        search_start = matches.suffix().first;
     }
 
     return total;
 }
 
-long long solve_puzzle2(const std::string& input) {
-    std::regex pattern(R"((?:do\(\)|don't\(\)|mul\((\d{1,3}),(\d{1,3})\)))");
-    std::smatch match;
-    std::string::const_iterator search_start(input.cbegin());
+long long solve_part2(const std::string& input) {
     long long total = 0;
     bool enabled = true;
+    std::regex pattern(R"((do\(\)|don't\(\)|mul\((\d{1,3}),(\d{1,3})\)))");
+    std::smatch matches;
 
-    while (std::regex_search(search_start, input.cend(), match, pattern)) {
-        if (match[0] == "do()") {
+    std::string::const_iterator search_start(input.cbegin());
+    while (std::regex_search(search_start, input.cend(), matches, pattern)) {
+        std::string instruction = matches[1];
+        if (instruction == "do()") {
             enabled = true;
-        } else if (match[0] == "don't()") {
+        } else if (instruction == "don't()") {
             enabled = false;
-        } else if (enabled && match[1].matched && match[2].matched) {
-            int x = std::stoi(match[1]);
-            int y = std::stoi(match[2]);
+        } else if (enabled && instruction.substr(0, 3) == "mul") {
+            int x = std::stoi(matches[2]);
+            int y = std::stoi(matches[3]);
             total += x * y;
         }
-        search_start = match.suffix().first;
+        search_start = matches.suffix().first;
     }
 
     return total;
@@ -45,16 +46,14 @@ long long solve_puzzle2(const std::string& input) {
 
 int main() {
     std::ifstream file("input.txt");
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file" << std::endl;
-        return 1;;
-    }
-
-    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    std::string input((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
 
-    std::cout << "Part 1: " << solve_puzzle(content) << std::endl;
-    std::cout << "Part 2: " << solve_puzzle2(content) << std::endl;
+    long long result = solve_part1(input);
+    std::cout << "Part 1: " << result << std::endl;
+
+    long long result2 = solve_part2(input);
+    std::cout << "Part 2: " << result2 << std::endl;
 
     return 0;
 }
