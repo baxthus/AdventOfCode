@@ -15,8 +15,10 @@ def evaluate(wire, circuit, memo):
         return int(wire)
     if wire in memo:
         return memo[wire]
-    
+
     operation = circuit[wire]
+
+    result = None
 
     if operation[0] == 'ASSIGN':
         result = evaluate(operation[1], circuit, memo)
@@ -30,7 +32,7 @@ def evaluate(wire, circuit, memo):
         result = evaluate(operation[1], circuit, memo) << evaluate(operation[2], circuit, memo) & 0xffff
     elif operation[0] == 'RSHIFT':
         result = evaluate(operation[1], circuit, memo) >> int(operation[2])
-    
+
     memo[wire] = result
     return result
 

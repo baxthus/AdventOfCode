@@ -18,7 +18,7 @@ def calculate_distance(speed, fly_time, rest_time, total_time):
         distance += fly_time * speed
     else:
         distance += remaining_time * speed
-    
+
     return distance
 
 def calculate_distance2(speed, fly_time, rest_time, current_time):
@@ -31,7 +31,7 @@ def calculate_distance2(speed, fly_time, rest_time, current_time):
         distance += fly_time * speed
     else:
         distance += remaining_time * speed
-    
+
     return distance
 
 def find_winning_reindeer(reindeer_list, total_time):
@@ -44,7 +44,7 @@ def find_winning_reindeer(reindeer_list, total_time):
         if distance > max_distance:
             max_distance = distance
             winner = name
-    
+
     return winner, max_distance
 
 def simulate_race(reindeer_list, duration):
@@ -56,7 +56,7 @@ def simulate_race(reindeer_list, duration):
             name, speed, fly_time, rest_time = reindeer
             if second % (fly_time + rest_time) <= fly_time and second % (fly_time + rest_time) != 0:
                 distances[name] += speed
-        
+
         max_distance = max(distances.values())
         for reindeer in reindeer_list:
             name = reindeer[0]
@@ -72,7 +72,7 @@ reindeer_list = [parse_reindeer(line) for line in reindeer_data]
 winner, distance = find_winning_reindeer(reindeer_list, 2503)
 
 points = simulate_race(reindeer_list, 2503)
-race_winner = max(points, key=points.get)
+race_winner = max(points.items(), key=lambda item: item[1])[0]
 max_points = points[race_winner]
 
 print(f'Part 1: {winner} won with a distance of {distance} km')

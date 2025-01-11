@@ -5,7 +5,7 @@
 #include <vector>
 
 int main() {
-    std::ifstream file("../input.txt");
+    std::ifstream file("input.txt");
     std::vector<int> left, right;
     int a, b;
 

@@ -109,8 +109,8 @@ int simulate_battle(int boss_hp, int boss_damage, bool hard_mode = false) {
       if (next.boss_hp <= 0)
         return next.spent_mana;
 
-      int damange = next.boss_damage - (next.shield_timer > 0 ? 7 : 0);
-      next.player_hp -= std::max(damange, 1);
+      int damage = next.boss_damage - (next.shield_timer > 0 ? 7 : 0);
+      next.player_hp -= std::max(damage, 1);
 
       if (next.player_hp > 0)
         pq.push(next);
