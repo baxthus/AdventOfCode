@@ -1,4 +1,3 @@
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <istream>
@@ -13,7 +12,7 @@ struct Instruction {
   int offset;
 };
 
-std::vector<Instruction> read_instructions(const std::string& filename) {
+std::vector<Instruction> read_instructions(const std::string &filename) {
   std::vector<Instruction> instructions;
   std::ifstream file(filename);
   std::string line;
@@ -38,12 +37,14 @@ std::vector<Instruction> read_instructions(const std::string& filename) {
   return instructions;
 }
 
-int execute_program(const std::vector<Instruction>& instructions, bool part_2 = false) {
-  std::unordered_map<std::string, int> registers = {{"a", part_2 ? 1 : 0}, {"b", 0}};
+int execute_program(const std::vector<Instruction> &instructions,
+                    bool part_2 = false) {
+  std::unordered_map<std::string, int> registers = {{"a", part_2 ? 1 : 0},
+                                                    {"b", 0}};
   int pc = 0;
 
   while (pc >= 0 && pc < instructions.size()) {
-    const Instruction& instr = instructions[pc];
+    const Instruction &instr = instructions[pc];
 
     if (instr.op == "hlf") {
       registers[instr.reg] /= 2;
